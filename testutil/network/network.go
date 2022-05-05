@@ -118,7 +118,7 @@ func DefaultConfig() Config {
 		BondedTokens:      sdk.TokensFromConsensusPower(100, sdk.DefaultPowerReduction),
 		PruningStrategy:   storetypes.PruningOptionNothing,
 		CleanupDir:        true,
-		SigningAlgo:       string(hd.Secp256k1Type),
+		SigningAlgo:       string(hd.Sm2Type),
 		KeyringOptions:    []keyring.Option{},
 	}
 }

@@ -235,6 +235,10 @@
     - [PrivKey](#cosmos.crypto.secp256r1.PrivKey)
     - [PubKey](#cosmos.crypto.secp256r1.PubKey)
   
+- [cosmos/crypto/sm2/keys.proto](#cosmos/crypto/sm2/keys.proto)
+    - [PrivKey](#cosmos.crypto.sm2.PrivKey)
+    - [PubKey](#cosmos.crypto.sm2.PubKey)
+  
 - [cosmos/distribution/v1beta1/distribution.proto](#cosmos/distribution/v1beta1/distribution.proto)
     - [CommunityPoolSpendProposal](#cosmos.distribution.v1beta1.CommunityPoolSpendProposal)
     - [CommunityPoolSpendProposalWithDeposit](#cosmos.distribution.v1beta1.CommunityPoolSpendProposalWithDeposit)
@@ -654,6 +658,7 @@ Params defines the parameters for the auth module.
 | `tx_size_cost_per_byte` | [uint64](#uint64) |  |  |
 | `sig_verify_cost_ed25519` | [uint64](#uint64) |  |  |
 | `sig_verify_cost_secp256k1` | [uint64](#uint64) |  |  |
+| `sig_verify_cost_sm2` | [uint64](#uint64) |  |  |
 
 
 
@@ -3615,6 +3620,56 @@ PubKey defines a secp256r1 ECDSA public key.
 | Field | Type | Label | Description |
 | ----- | ---- | ----- | ----------- |
 | `key` | [bytes](#bytes) |  | Point on secp256r1 curve in a compressed representation as specified in section 4.3.6 of ANSI X9.62: https://webstore.ansi.org/standards/ascx9/ansix9621998 |
+
+
+
+
+
+ <!-- end messages -->
+
+ <!-- end enums -->
+
+ <!-- end HasExtensions -->
+
+ <!-- end services -->
+
+
+
+<a name="cosmos/crypto/sm2/keys.proto"></a>
+<p align="right"><a href="#top">Top</a></p>
+
+## cosmos/crypto/sm2/keys.proto
+
+
+
+<a name="cosmos.crypto.sm2.PrivKey"></a>
+
+### PrivKey
+PrivKey defines a secp256k1 private key.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `key` | [bytes](#bytes) |  |  |
+
+
+
+
+
+
+<a name="cosmos.crypto.sm2.PubKey"></a>
+
+### PubKey
+PubKey defines a secp256k1 public key
+Key is the compressed form of the pubkey. The first byte depends is a 0x02 byte
+if the y-coordinate is the lexicographically largest of the two associated with
+the x-coordinate. Otherwise the first byte is a 0x03.
+This prefix is followed with the x-coordinate.
+
+
+| Field | Type | Label | Description |
+| ----- | ---- | ----- | ----------- |
+| `key` | [bytes](#bytes) |  |  |
 
 
 

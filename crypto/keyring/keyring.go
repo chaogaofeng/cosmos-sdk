@@ -129,6 +129,8 @@ type Exporter interface {
 	ExportPubKeyArmor(uid string) (string, error)
 	ExportPubKeyArmorByAddress(address sdk.Address) (string, error)
 
+	ExportPrivateKeyObject(uid string) (types.PrivKey, error)
+
 	// ExportPrivKeyArmor returns a private key in ASCII armored format.
 	// It returns an error if the key does not exist or a wrong encryption passphrase is supplied.
 	ExportPrivKeyArmor(uid, encryptPassphrase string) (armor string, err error)
@@ -203,8 +205,8 @@ type keystore struct {
 func newKeystore(kr keyring.Keyring, opts ...Option) keystore {
 	// Default options for keybase
 	options := Options{
-		SupportedAlgos:       SigningAlgoList{hd.Secp256k1},
-		SupportedAlgosLedger: SigningAlgoList{hd.Secp256k1},
+		SupportedAlgos:       SigningAlgoList{hd.Secp256k1, hd.Sm2},
+		SupportedAlgosLedger: SigningAlgoList{hd.Secp256k1, hd.Sm2},
 	}
 
 	for _, optionFn := range opts {

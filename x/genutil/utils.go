@@ -6,9 +6,10 @@ import (
 	"path/filepath"
 	"time"
 
+	"github.com/tendermint/tendermint/crypto/algo"
+
 	"github.com/cosmos/go-bip39"
 	cfg "github.com/tendermint/tendermint/config"
-	tmed25519 "github.com/tendermint/tendermint/crypto/ed25519"
 	tmos "github.com/tendermint/tendermint/libs/os"
 	"github.com/tendermint/tendermint/p2p"
 	"github.com/tendermint/tendermint/privval"
@@ -61,9 +62,20 @@ func InitializeNodeValidatorFilesFromMnemonic(config *cfg.Config, mnemonic strin
 		return "", nil, fmt.Errorf("invalid mnemonic")
 	}
 
-	nodeKey, err := p2p.LoadOrGenNodeKey(config.NodeKeyFile())
-	if err != nil {
-		return "", nil, err
+	var nodeKey *p2p.NodeKey
+	if len(mnemonic) == 0 {
+		nodeKey, err = p2p.LoadOrGenNodeKey(config.NodeKeyFile())
+		if err != nil {
+			return "", nil, err
+		}
+	} else {
+		privKey := algo.GenPrivKeyFromSecret([]byte(mnemonic))
+		nodeKey = &p2p.NodeKey{
+			PrivKey: privKey,
+		}
+		if err := nodeKey.SaveAs(config.NodeKeyFile()); err != nil {
+			return "", nil, err
+		}
 	}
 
 	nodeID = string(nodeKey.ID())
@@ -82,8 +94,9 @@ func InitializeNodeValidatorFilesFromMnemonic(config *cfg.Config, mnemonic strin
 	if len(mnemonic) == 0 {
 		filePV = privval.LoadOrGenFilePV(pvKeyFile, pvStateFile)
 	} else {
-		privKey := tmed25519.GenPrivKeyFromSecret([]byte(mnemonic))
+		privKey := algo.GenPrivKeyFromSecret([]byte(mnemonic))
 		filePV = privval.NewFilePV(privKey, pvKeyFile, pvStateFile)
+		filePV.Save()
 	}
 
 	tmValPubKey, err := filePV.GetPubKey()

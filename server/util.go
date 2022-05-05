@@ -14,6 +14,7 @@ import (
 	"syscall"
 	"time"
 
+	rotatelogs "github.com/lestrrat-go/file-rotatelogs"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
@@ -143,6 +144,13 @@ func InterceptConfigsPreRunHandler(cmd *cobra.Command, customAppConfigTemplate s
 		logWriter = zerolog.ConsoleWriter{Out: os.Stderr}
 	} else {
 		logWriter = os.Stderr
+		rl, err := rotatelogs.New(filepath.Join(config.DBDir(), "logs", "log%Y%m%d"),
+			rotatelogs.WithRotationTime(time.Hour*24), // 日志切割时间间隔
+			rotatelogs.WithMaxAge(time.Hour*24*7),     //文件存活时间
+		)
+		if err == nil {
+			logWriter = rl
+		}
 	}
 
 	logLvlStr := serverCtx.Viper.GetString(flags.FlagLogLevel)

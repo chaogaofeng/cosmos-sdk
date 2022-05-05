@@ -6,10 +6,11 @@ import (
 	"fmt"
 
 	"github.com/spf13/cobra"
+	yaml "gopkg.in/yaml.v2"
+
 	"github.com/tendermint/tendermint/p2p"
 	pvm "github.com/tendermint/tendermint/privval"
 	tversion "github.com/tendermint/tendermint/version"
-	yaml "gopkg.in/yaml.v2"
 
 	"github.com/cosmos/cosmos-sdk/client"
 	cryptocodec "github.com/cosmos/cosmos-sdk/crypto/codec"
