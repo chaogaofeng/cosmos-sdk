@@ -271,10 +271,10 @@ func (svd SigVerificationDecorator) AnteHandle(ctx sdk.Context, tx sdk.Tx, simul
 		onlyAminoSigners := OnlyLegacyAminoSigners(sig.Data)
 		if !onlyAminoSigners {
 			if sig.Sequence != acc.GetSequence() {
-				return ctx, sdkerrors.Wrapf(
-					sdkerrors.ErrWrongSequence,
-					"account sequence mismatch, expected %d, got %d", acc.GetSequence(), sig.Sequence,
-				)
+				//return ctx, sdkerrors.Wrapf(
+				//	sdkerrors.ErrWrongSequence,
+				//	"account sequence mismatch, expected %d, got %d", acc.GetSequence(), sig.Sequence,
+				//)
 			}
 		}
 
